@@ -1,0 +1,110 @@
+SMART BUS TICKET BOOKING & RESERVATION SYSTEM
+TEST CASES
+=================================================================
+
+How to run: start the app in a fresh session (python main.py) and follow the
+given menu choices. Use a fresh session whenever a clean in-memory state is
+required.
+
+-----------------------------------------------------------------
+
+TC-01   View all routes
+        Scenario:      User opens the app and views available routes.
+        Input / action: Menu choice 1 (View Available Routes).
+        Expected result: All five routes (R101-R105) and seat status appear.
+        Actual result: All five routes displayed with status
+                       (Available / Fully Booked / Partially Booked).
+        Matched:       Yes
+
+TC-02   Search by city
+        Scenario:      User searches for a journey by city.
+        Input / action: Menu choice 2, search term "hyderabad".
+        Expected result: Routes departing from or arriving at Hyderabad appear
+                         (R101, R103, R105).
+        Actual result: R101, R103 and R105 were returned with seat availability.
+        Matched:       Yes
+
+TC-03   Search with unknown city
+        Scenario:      User searches for a city that does not exist.
+        Input / action: Menu choice 2, search term "Atlantis".
+        Expected result: No-match message; program continues.
+        Actual result: "No routes found for 'Atlantis'." shown, menu continued.
+        Matched:       Yes
+
+TC-04   Book two seats
+        Scenario:      A passenger books two seats on a valid route.
+        Input / action: Menu choice 3. Passenger "Ahmed", age 24, route R101, 2 seats.
+        Expected result: Booking confirmed for Rs. 2,400; R101 availability drops by 2.
+        Actual result: Booking B1001 confirmed, total fare Rs. 2400, seats deducted.
+                       Cancellation later restored R101 availability to 40.
+        Matched:       Yes
+
+TC-05   Zero seats rejected
+        Scenario:      User tries to book zero seats.
+        Input / action: Menu choice 3. Route R102, seat quantity 0.
+        Expected result: Request rejected; no booking or seat change.
+        Actual result: "Seat quantity must be a positive integer. Booking not created."
+        Matched:       Yes
+
+TC-06   Too many seats rejected
+        Scenario:      User requests more seats than available.
+        Input / action: Menu choice 3. Route R102, seat quantity 37 (36 available).
+        Expected result: Request rejected; availability never becomes negative.
+        Actual result: "Only 36 seats available on R102. Booking not created."
+        Matched:       Yes
+
+TC-07   Cancel a confirmed booking
+        Scenario:      User cancels a confirmed booking.
+        Input / action: Menu choice 5, booking ID B1001.
+        Expected result: Status changes and correct seats are restored.
+        Actual result: Booking B1001 cancelled; 2 seats restored; R101 available 40.
+        Matched:       Yes
+
+TC-08   Cancel the same booking again
+        Scenario:      User repeats cancellation for a cancelled booking.
+        Input / action: Menu choice 5, booking ID B1001 again.
+        Expected result: Cancel rejected; no additional seat restoration.
+        Actual result: "Booking B1001 is already cancelled."
+        Matched:       Yes
+
+TC-09   Report with no bookings
+        Scenario:      User generates a report before any booking exists.
+        Input / action: Menu choice 7 (report).
+        Expected result: Booking totals/revenue zero; route status still counted.
+        Actual result: All booking totals zero; fully booked routes 0.
+        Matched:       Yes
+
+TC-10   Book all remaining seats
+        Scenario:      User books exactly the remaining seats of a route.
+        Input / action: Menu choice 3. Route R105, seat quantity 30.
+        Expected result: Booking succeeds; availability zero; Fully Booked status.
+        Actual result: Booking B1001 confirmed; route R105 fully booked;
+                       revenue Rs. 45,000 recorded.
+        Matched:       Yes
+
+TC-11   Report after cancellation
+        Scenario:      User cancels a booking and then generates a report.
+        Input / action: Menu choice 3 (book B1002), menu choice 5 (cancel B1001),
+                        menu choice 7 (report).
+        Expected result: Cancelled count increases; cancelled fare excluded.
+        Actual result: Cancelled count 1; confirmed revenue reflected only
+                       confirmed bookings (Rs. 800).
+        Matched:       Yes
+
+TC-12   Invalid menu option
+        Scenario:      User enters an unsupported menu choice.
+        Input / action: Menu choice 9, then text "abc".
+        Expected result: Helpful error; program returns to menu.
+        Actual result: "Invalid choice. Please enter a number between 1 and 8."
+                       returned to menu loop.
+        Matched:       Yes
+
+=================================================================
+OVERALL RESULT
+=================================================================
+
+All 12 required tests executed. All matched the expected behavior.
+
+Note: actual results above were recorded from live runs of main.py in fresh
+sessions. Cancelled bookings remain visible in history and are excluded from
+confirmed revenue.
